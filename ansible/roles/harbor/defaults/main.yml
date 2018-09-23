@@ -1,0 +1,30 @@
+---
+### Docker-compose
+docker_compose_version: '1.22.0'
+
+### latest online installer download url
+horbor_online_installer_url: https://storage.googleapis.com/harbor-releases/release-1.6.0/harbor-online-installer-v1.6.0.tgz
+harbor_download_dir: /tmp
+harbor_installer_tgz_name: harbor-installer.tgz
+harbor_dest_dir: /opt
+
+### harbor.cfg
+# DO NOT use 127.0.0.1
+harbor_hostname: "harbor-elb-912310683.ap-southeast-2.elb.amazonaws.com"
+harbor_ui_url_protocol: https
+harbor_max_job_workers: 10
+harbor_customize_crt: on
+harbor_ssl_cert: '/Users/Brandon/Documents/interview-projects/elb/server.crt'
+harbor_ssl_cert_key: '/Users/Brandon/Documents/interview-projects/elb/server.key'
+harbor_ssl_self_days: 365
+harbor_admin_password: 'changeme'
+harbor_project_creation_restriction: 'everyone'
+harbor_db_host: 'harbor-db.123456789876.ap-southeast-2.rds.amazonaws.com'
+harbor_db_user: 'harbor'
+harbor_db_password: 'changeme'
+harbor_log_rotate_count: 50
+harbor_log_rotate_size: '200M'
+
+### Storage providor information
+harbor_registry_storage_provider_name: 's3'
+harbor_registry_storage_provider_config: "accesskey: putyouraccesskeyhere,secretkey: putyoursecretkeyhere,region: ap-southeast-2,bucket: darumatic.harbor-registry"

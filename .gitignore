@@ -7,3 +7,9 @@
 
 # .tfvars files
 *.tfvars
+
+# Ignore ssl files
+ssl/*.crt
+ssl/*.csr
+ssl/*.key
+ssl/*.srl

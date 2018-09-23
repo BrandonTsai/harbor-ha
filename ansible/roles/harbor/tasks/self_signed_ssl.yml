@@ -1,0 +1,17 @@
+---
+# in case the cert dir is somewhere else
+- name: check or create ssl key dir
+  become: yes
+  file:
+    state: directory
+    path: "/data/cert"
+
+- name: copying ssl certification file
+  copy:
+    src: '{{ harbor_ssl_cert }}'
+    dest: '/data/cert/server.crt'
+
+- name: copying ssl certification key
+  copy:
+    src: '{{ harbor_ssl_cert_key }}'
+    dest: '/data/cert/server.key'

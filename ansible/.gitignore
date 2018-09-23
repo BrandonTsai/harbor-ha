@@ -1,0 +1,6 @@
+*.retry
+*.log
+.vagrant/*
+
+# Ignore Production information
+hosts/prod.ini

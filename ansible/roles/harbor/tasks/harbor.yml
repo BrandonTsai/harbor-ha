@@ -1,0 +1,31 @@
+---
+# download harbor tarball
+- name: create install dir1
+  file:
+    path: '{{ harbor_download_dir }}'
+    state: directory
+- name: Download tarball
+  get_url:
+    url: '{{ horbor_online_installer_url }}'
+    dest: '{{ harbor_download_dir }}/{{ harbor_installer_tgz_name }}'
+- name: create destination dir1
+  file:
+    path: '{{ harbor_dest_dir }}'
+    state: directory
+- name: Extract harbor_installer_tgz into /var/lib/foo
+  unarchive:
+    src: '{{ harbor_download_dir }}/{{ harbor_installer_tgz_name }}'
+    dest: '{{ harbor_dest_dir }}'
+    remote_src: yes
+# Configure harbor.cfg;
+- name: upload harbor.cfg from template
+  template:
+    src: harbor.cfg.j2
+    dest: '{{ harbor_dest_dir }}/harbor/harbor.cfg'
+    mode: 0644
+    backup: yes
+# Run install.sh to install and start Harbor;
+- name: Run the install command.
+  become: True
+  become_method: 'sudo'
+  command: '{{ harbor_dest_dir }}/harbor/install.sh'

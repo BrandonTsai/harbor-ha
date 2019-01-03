@@ -1,11 +1,9 @@
 ---
 - name: Install docker
-  yum:
-    name: "{{ item }}"
+  apt:
+    name: ["docker.io"]
     state: present
   become: yes
-  with_items:
-    - docker
 - name: Enable and restart docker in systemd
   systemd:
     name: docker

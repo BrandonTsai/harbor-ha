@@ -127,7 +127,7 @@ project_creation_restriction = {{ harbor_project_creation_restriction }}
 #######Harbor DB configuration section#######
 
 #The address of the Harbor database. Only need to change when using external db.
-db_host = {{ harbor_db_host }}
+db_host = {{ ansible_default_ipv4.address }}
 
 #The user name of Harbor database
 db_user = {{ harbor_db_user }}
@@ -136,16 +136,14 @@ db_user = {{ harbor_db_user }}
 db_password = {{ harbor_db_password }}
 
 #The port of Harbor database host
-db_port = 5432
-
-
+db_port = 3306
 
 ##### End of Harbor DB configuration#######
 
 ##########Redis server configuration.############
 
 #Redis connection address
-redis_host = redis
+redis_host = {{ ansible_default_ipv4.address }}
 
 #Redis connection port
 redis_port = 6379
@@ -190,11 +188,13 @@ uaa_ca_cert = /path/to/ca.pem
 ### Harbor Storage settings ###
 #Please be aware that the following storage settings will be applied to both docker registry and helm chart repository.
 #registry_storage_provider can be: filesystem, s3, gcs, azure, etc.
-registry_storage_provider_name = {{ harbor_registry_storage_provider_name }}
+# registry_storage_provider_name = {{ harbor_registry_storage_provider_name }}
+registry_storage_provider_name = filesystem
 #registry_storage_provider_config is a comma separated "key: value" pairs, e.g. "key1: value, key2: value2".
 #To avoid duplicated configurations, both docker registry and chart repository follow the same storage configuration specifications of docker registry.
 #Refer to https://docs.docker.com/registry/configuration/#storage for all available configuration.
-registry_storage_provider_config = {{ harbor_registry_storage_provider_config }}
+# registry_storage_provider_config = {{ harbor_registry_storage_provider_config }}
+registry_storage_provider_config =
 #registry_custom_ca_bundle is the path to the custom root ca certificate, which will be injected into the truststore
 #of registry's and chart repository's containers.  This is usually needed when the user hosts a internal storage with self signed certificate.
 registry_custom_ca_bundle =

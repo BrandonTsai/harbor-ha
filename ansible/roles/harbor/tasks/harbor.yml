@@ -24,8 +24,23 @@
     dest: '{{ harbor_dest_dir }}/harbor/harbor.cfg'
     mode: 0644
     backup: yes
-# Run install.sh to install and start Harbor;
-- name: Run the install command.
-  become: True
-  become_method: 'sudo'
-  command: '{{ harbor_dest_dir }}/harbor/install.sh'
+- name: replace adminserver env templates file
+  template:
+    src: adminserver/env.j2
+    dest: '{{ harbor_dest_dir }}/harbor/common/templates/adminserver/env'
+    mode: 0644
+- name: replace adminserver entrypoint file
+  copy:
+    src: adminserver/start.sh
+    dest: '{{ harbor_dest_dir }}/harbor/common/adminserver-start.sh'
+    mode: 0755
+- name: replace docker-compose file
+  copy:
+    src: docker-compose.yml
+    dest: "{{ harbor_dest_dir }}/harbor/docker-compose.yml"
+  register: compose_file
+# # Run install.sh to install and start Harbor;
+# - name: Run the install command.
+#   become: True
+#   become_method: 'sudo'
+#   command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-notary --ha'

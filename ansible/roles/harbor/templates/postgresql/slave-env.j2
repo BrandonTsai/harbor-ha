@@ -1,0 +1,5 @@
+POSTGRES_PASSWORD={{ harbor_db_password }}
+POSTGRES_USER={{ harbor_db_user }}
+POSTGRES_DB=registry
+PGDATA=/var/lib/postgresql/data
+REPLICATE_FROM={{ db_master_ip }}

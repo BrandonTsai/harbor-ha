@@ -14,3 +14,10 @@
     url: 'https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64'
     dest: '/bin/docker-compose'
     mode: 0755
+- name: Bash aliases | Add aliases
+  lineinfile:
+    dest: "~/.bash_aliases"
+    create: yes
+    mode: 0644
+    line: 'alias dcp="docker-compose"'
+    regexp: "^alias dcp="

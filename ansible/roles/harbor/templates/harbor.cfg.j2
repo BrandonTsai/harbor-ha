@@ -136,14 +136,15 @@ db_user = {{ harbor_db_user }}
 db_password = {{ harbor_db_password }}
 
 #The port of Harbor database host
-db_port = 3306
+db_port = 5432
 
 ##### End of Harbor DB configuration#######
 
 ##########Redis server configuration.############
 
 #Redis connection address
-redis_host = {{ ansible_default_ipv4.address }}
+# redis_host = {{ ansible_default_ipv4.address }}
+redis_host = redis
 
 #Redis connection port
 redis_port = 6379

@@ -2,11 +2,11 @@
   hosts: harbor
   become: True
   become_method: sudo
-  environment:
-    HARBOR_DB_USER: "{{ harbor_db_user }}"
-    HARBOR_DB_PASSWORD: "{{ harbor_db_password }}"
-    HARBOR_DB_ROOT_PASSWORD: "{{ harbor_db_root_password }}"
+  # environment:
+  #   HARBOR_DB_USER: "{{ harbor_db_user }}"
+  #   HARBOR_DB_PASSWORD: "{{ harbor_db_password }}"
+  #   HARBOR_DB_ROOT_PASSWORD: "{{ harbor_db_root_password }}"
   roles:
     - { role: pre-install/docker, tags: ["docker"] }
-    - { role: mariaDB, tags: ["mariaDB"] }
+    # - { role: mariaDB, tags: ["mariaDB"] }
     - { role: harbor, tags: ["harbor"] }

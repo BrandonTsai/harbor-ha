@@ -17,28 +17,24 @@
     src: '{{ harbor_download_dir }}/{{ harbor_installer_tgz_name }}'
     dest: '{{ harbor_dest_dir }}'
     remote_src: yes
-# Configure harbor.cfg;
 - name: upload harbor.cfg from template
   template:
     src: harbor.cfg.j2
     dest: '{{ harbor_dest_dir }}/harbor/harbor.cfg'
     mode: 0644
     backup: yes
-- name: replace adminserver env templates file
-  template:
-    src: adminserver/env.j2
-    dest: '{{ harbor_dest_dir }}/harbor/common/templates/adminserver/env'
-    mode: 0644
-- name: replace adminserver entrypoint file
-  copy:
-    src: adminserver/start.sh
-    dest: '{{ harbor_dest_dir }}/harbor/common/adminserver-start.sh'
-    mode: 0755
 - name: replace docker-compose file
   copy:
-    src: docker-compose.yml
+    src: "docker-compose.yml"
     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.yml"
+    backup: yes
   register: compose_file
+- name: replace postgresql env file
+  template:
+    src: "postgresql/{{server_role}}-env.j2"
+    dest: "{{ harbor_dest_dir }}/harbor/common/templates/db/env"
+    backup: yes
+  register: db_env
 # # Run install.sh to install and start Harbor;
 # - name: Run the install command.
 #   become: True

@@ -84,7 +84,7 @@ services:
       - SETUID
     volumes:
       # - ./common/adminserver-start.sh:/harbor/start.sh:z
-      - /data/config:/etc/adminserver/config:z
+      - /data/config/:/etc/adminserver/config/:z
       - /data/secretkey:/etc/adminserver/key:z
       - /data/:/data/:z
     networks:
@@ -179,16 +179,23 @@ services:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "jobservice"
   postgresql:
-    image: 'danieldent/postgres-replication'
+    # image: jgiannuzzi/postgres-bdr:9.4.17
+    #image: safenetlabs/postgres-bdr:0.2.2
+    # image: pygmy/postgres-repmgr:9.6
+    # image: polinux/postgres-bdr
     container_name: harbor-db
     restart: always
     ports:
       - 5432:5432
     volumes:
-      - /data/database:/var/lib/postgresql/data:z
-    env_file:
-     - ./common/config/db/env
-    # cap_drop:
+      - /data/database:/var/lib/postgresql/9.6/data
+    environment:
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_USER: admin
+      POSTGRES_DB: registry
+    #env_file:
+    #  - ./common/config/db/env
+    #cap_drop:
     #  - ALL
     cap_add:
       - CHOWN
@@ -205,6 +212,35 @@ services:
       options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "postgresql"
+  pg-slave:
+    #build: '.'
+    image: 'danieldent/postgres-replication'
+    restart: 'always'
+    environment:
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_USER: admin
+      POSTGRES_DB: registry
+      #POSTGRES_USER: 'postgres'
+      #POSTGRES_PASSWORD: 'postgres'
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+      REPLICATE_FROM: '10.0.211.125'
+    volumes:
+     - ./data:/var/lib/postgresql/data
+    ports:
+     - 5432:5432
+  pg-master:
+    #build: '.'
+    image: 'danieldent/postgres-replication'
+    restart: 'always'
+    environment:
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_USER: admin
+      POSTGRES_DB: registry
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    volumes:
+     - ./data:/var/lib/postgresql/data
+    ports:
+     - 5432:5432
   redis:
     image: goharbor/redis-photon:v1.7.0
     container_name: redis

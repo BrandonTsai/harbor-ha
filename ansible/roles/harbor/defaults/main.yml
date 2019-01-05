@@ -1,5 +1,6 @@
 ---
 ### latest online installer download url
+# https://storage.googleapis.com/harbor-releases/release-1.6.0/harbor-online-installer-v1.6.0.tgz
 horbor_online_installer_url: https://storage.googleapis.com/harbor-releases/release-1.7.0/harbor-online-installer-v1.7.0.tgz
 harbor_download_dir: /tmp
 harbor_installer_tgz_name: harbor-installer.tgz
@@ -14,11 +15,11 @@ harbor_customize_crt: on
 # harbor_ssl_cert: '/Users/Brandon/Documents/interview-projects/elb/server.crt'
 # harbor_ssl_cert_key: '/Users/Brandon/Documents/interview-projects/elb/server.key'
 harbor_ssl_self_days: 365
-# harbor_admin_password: 'changeme'
+harbor_admin_password: 'changeme'
 harbor_project_creation_restriction: 'everyone'
 # harbor_db_host: 'harbor-db.123456789876.ap-southeast-2.rds.amazonaws.com'
-# harbor_db_user: 'harbor'
-# harbor_db_password: 'changeme'
+harbor_db_user: 'harbor'
+harbor_db_password: 'changeme'
 harbor_log_rotate_count: 50
 harbor_log_rotate_size: '200M'
 

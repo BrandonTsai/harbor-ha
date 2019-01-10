@@ -8,5 +8,5 @@
   #   HARBOR_DB_ROOT_PASSWORD: "{{ harbor_db_root_password }}"
   roles:
     - { role: pre-install/docker, tags: ["docker"] }
-    # - { role: mariaDB, tags: ["mariaDB"] }
+    - { role: postgresql, tags: ["postgresql"] }
     - { role: harbor, tags: ["harbor"] }

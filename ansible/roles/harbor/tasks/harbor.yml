@@ -29,12 +29,8 @@
     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.yml"
     backup: yes
   register: compose_file
-- name: replace postgresql env file
-  template:
-    src: "postgresql/{{server_role}}-env.j2"
-    dest: "{{ harbor_dest_dir }}/harbor/common/templates/db/env"
-    backup: yes
-  register: db_env
+
+
 # # Run install.sh to install and start Harbor;
 # - name: Run the install command.
 #   become: True

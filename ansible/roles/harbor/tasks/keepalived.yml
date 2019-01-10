@@ -4,3 +4,9 @@
     name: ["keepalived"]
     state: present
   become: yes
+
+- name: set up leepalived config
+  template:
+    src: keepalived.conf
+    dest: /etc/keepalived/keepalived.conf
+    mode: 0644

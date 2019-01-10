@@ -27,12 +27,26 @@
   copy:
     src: "docker-compose.yml"
     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.yml"
-    backup: yes
   register: compose_file
+- name: replace docker-compose.clair file
+  copy:
+    src: "docker-compose.clair.yml"
+    dest: "{{ harbor_dest_dir }}/harbor/docker-compose.clair.yml"
+  register: compose_fil
+- name: replace docker-compose.clair file
+  copy:
+    src: "docker-compose.chartmuseum.yml"
+    dest: "{{ harbor_dest_dir }}/harbor/docker-compose.chartmuseum.yml"
+  register: compose_fil
+- name: replace docker-compose.clair file
+  copy:
+    src: "docker-compose.notary.yml"
+    dest: "{{ harbor_dest_dir }}/harbor/docker-compose.notary.yml"
+  register: compose_fil
 
-
-# # Run install.sh to install and start Harbor;
-# - name: Run the install command.
-#   become: True
-#   become_method: 'sudo'
-#   command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-notary --ha'
+# Run install.sh to install and start Harbor;
+- name: Run the install command.
+  become: True
+  become_method: 'sudo'
+  command: '{{ harbor_dest_dir }}/harbor/install.sh --with-notary --with-clair --with-chartmuseum'
+  when: groups['harbor'][0] == ansible_default_ipv4.address

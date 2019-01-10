@@ -42,29 +42,33 @@
 - name: launch container
   shell: "docker-compose -f {{ db_dir }}/docker-compose.yml up -d"
 
+- debug:
+    msg: "{{groups['harbor'][0]}}"
+
 - name: Init Clair DB | check database exist or not
   shell: "docker exec -t postgresql psql -U postgres -c \"SELECT 1 FROM pg_database WHERE datname = 'clair'\" | grep -q 1 "
   register: clair_db
   until: clair_db.rc == 0
-  retries: 12
+  retries: 6
   delay: 5
   ignore_errors: yes
+  when: groups['harbor'][0] == ansible_default_ipv4.address
 
 - name: Init Clair DB | debug clair_db
   debug:
     msg: "{{clair_db}}"
-  when: clair_db.failed
+  when: groups['harbor'][0] == ansible_default_ipv4.address and clair_db.failed
 
 - name: Init Clair DB | create database
   shell: "docker exec -t postgresql psql -U postgres -c \"create database clair;\""
   register: create_clair_db
-  when: clair_db.failed
+  when: groups['harbor'][0] == ansible_default_ipv4.address and clair_db.failed
 
 - name: Init Clair DB | create user
   shell: "docker exec -t postgresql psql -U postgres -c \"create user {{ clair_db_user }} with encrypted password '{{ clair_db_password }}';\""
   register: create_clair_user
-  when: create_clair_db.changed
+  when: groups['harbor'][0] == ansible_default_ipv4.address and create_clair_db.changed
 
 - name: Init Clair DB | create user
   shell: "docker exec -t postgresql psql -U postgres -c \"grant all privileges on database clair to {{ clair_db_user }};\""
-  when: create_clair_user.changed
+  when: groups['harbor'][0] == ansible_default_ipv4.address and create_clair_user.changed

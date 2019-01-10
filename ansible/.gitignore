@@ -3,4 +3,5 @@
 .vagrant/*
 
 # Ignore Production information
-hosts/prod.ini
+hosts/production
+hosts/test.ini

@@ -8,16 +8,10 @@
 
 - name: copying ssl certification file
   copy:
-    src: generate_ssl.sh
-    dest: '/data/cert/generate_ssl.sh'
-    mode: 0777
+    src: '{{ harbor_ssl_cert }}'
+    dest: '/data/cert/server.crt'
 
-# - name: copying ssl certification file
-#   copy:
-#     src: '{{ harbor_ssl_cert }}'
-#     dest: '/data/cert/server.crt'
-
-# - name: copying ssl certification key
-#   copy:
-#     src: '{{ harbor_ssl_cert_key }}'
-#     dest: '/data/cert/server.key'
+- name: copying ssl certification key
+  copy:
+    src: '{{ harbor_ssl_cert_key }}'
+    dest: '/data/cert/server.key'

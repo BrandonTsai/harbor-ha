@@ -12,9 +12,9 @@ harbor_hostname: "{{ ansible_default_ipv4.address }}"
 harbor_ui_url_protocol: https
 harbor_max_job_workers: 10
 harbor_customize_crt: on
-# harbor_ssl_cert: '/Users/Brandon/Documents/interview-projects/elb/server.crt'
-# harbor_ssl_cert_key: '/Users/Brandon/Documents/interview-projects/elb/server.key'
-harbor_ssl_self_days: 365
+harbor_ssl_cert: 'server.crt'
+harbor_ssl_cert_key: 'server.key'
+# harbor_ssl_self_days: 365
 harbor_admin_password: 'changeme'
 harbor_project_creation_restriction: 'everyone'
 # harbor_db_host: 'harbor-db.123456789876.ap-southeast-2.rds.amazonaws.com'

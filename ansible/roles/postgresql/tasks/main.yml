@@ -7,6 +7,10 @@
   file:
     path: "{{ db_dir }}"
     state: directory
+- name: create postgresql dir
+  file:
+    path: "{{ db_dir }}/config"
+    state: directory
 - name: create postgresql data dir
   file:
     path: "{{ db_data_dir }}"

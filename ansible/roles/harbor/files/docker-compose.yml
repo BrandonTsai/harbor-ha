@@ -178,33 +178,6 @@ services:
       options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "jobservice"
-  # postgresql:
-  #   image: 'danieldent/postgres-replication'
-  #   container_name: harbor-db
-  #   restart: always
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - /data/database:/var/lib/postgresql/data:z
-  #   env_file:
-  #    - ./common/config/db/env
-  #   # cap_drop:
-  #   #  - ALL
-  #   cap_add:
-  #     - CHOWN
-  #     - DAC_OVERRIDE
-  #     - SETGID
-  #     - SETUID
-  #   networks:
-  #     - harbor
-  #   dns_search: .
-  #   depends_on:
-  #     - log
-  #   logging:
-  #     driver: "syslog"
-  #     options:
-  #       syslog-address: "tcp://127.0.0.1:1514"
-  #       tag: "postgresql"
   redis:
     image: goharbor/redis-photon:v1.7.0
     container_name: redis

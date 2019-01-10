@@ -127,7 +127,7 @@ project_creation_restriction = {{ harbor_project_creation_restriction }}
 #######Harbor DB configuration section#######
 
 #The address of the Harbor database. Only need to change when using external db.
-db_host = {{ ansible_default_ipv4.address }}
+db_host = {{ vip }}
 
 #The user name of Harbor database
 db_user = {{ harbor_db_user }}
@@ -162,16 +162,16 @@ redis_db_index = 1,2,3
 ##########Clair DB configuration############
 
 #Clair DB host address. Only change it when using an exteral DB.
-clair_db_host = postgresql
+clair_db_host = {{ vip }}
 #The password of the Clair's postgres database. Only effective when Harbor is deployed with Clair.
 #Please update it before deployment. Subsequent update will cause Clair's API server and Harbor unable to access Clair's database.
-clair_db_password = root123
+clair_db_password = {{ clair_db_password }}
 #Clair DB connect port
 clair_db_port = 5432
 #Clair DB username
-clair_db_username = postgres
+clair_db_username = {{ clair_db_user }}
 #Clair default database
-clair_db = postgres
+clair_db = clair
 
 #The interval of clair updaters, the unit is hour, set to 0 to disable the updaters.
 clair_updaters_interval = 12

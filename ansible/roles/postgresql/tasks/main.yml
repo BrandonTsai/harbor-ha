@@ -60,15 +60,15 @@
   when: groups['harbor'][0] == ansible_default_ipv4.address and clair_db.failed
 
 - name: Init Clair DB | create database
-  shell: "docker exec -t postgresql psql -U postgres -c \"create database clair;\""
+  shell: "docker exec -t harbor-db psql -U postgres -c \"create database clair;\""
   register: create_clair_db
   when: groups['harbor'][0] == ansible_default_ipv4.address and clair_db.failed
 
 - name: Init Clair DB | create user
-  shell: "docker exec -t postgresql psql -U postgres -c \"create user {{ clair_db_user }} with encrypted password '{{ clair_db_password }}';\""
+  shell: "docker exec -t harbor-db psql -U postgres -c \"create user {{ clair_db_user }} with encrypted password '{{ clair_db_password }}';\""
   register: create_clair_user
   when: groups['harbor'][0] == ansible_default_ipv4.address and create_clair_db.changed
 
 - name: Init Clair DB | create user
-  shell: "docker exec -t postgresql psql -U postgres -c \"grant all privileges on database clair to {{ clair_db_user }};\""
+  shell: "docker exec -t harbor-db psql -U postgres -c \"grant all privileges on database clair to {{ clair_db_user }};\""
   when: groups['harbor'][0] == ansible_default_ipv4.address and create_clair_user.changed

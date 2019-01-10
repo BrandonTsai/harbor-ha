@@ -2,7 +2,7 @@ version: '3'
 services:
   postgresql:
     image: 'danieldent/postgres-replication'
-    container_name: postgresql
+    container_name: harbor-db
     restart: always
     ports:
       - 5432:5432

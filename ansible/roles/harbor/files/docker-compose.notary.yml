@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   core:
     networks:
@@ -27,7 +27,7 @@ services:
       - notary-signer
     logging:
       driver: "syslog"
-      options:  
+      options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "notary-server"
   notary-signer:
@@ -51,7 +51,7 @@ services:
       - ./common/config/notary/signer_env
     logging:
       driver: "syslog"
-      options:  
+      options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "notary-signer"
 networks:

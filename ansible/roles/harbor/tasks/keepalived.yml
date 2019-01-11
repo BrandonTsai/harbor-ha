@@ -5,8 +5,23 @@
     state: present
   become: yes
 
+- name: copy check_harbor.sh
+  copy:
+    src: check_harbor.sh
+    dest: /opt/check_harbor.sh
+    mode: 0764
+  register: check
+
 - name: set up leepalived config
   template:
     src: keepalived.conf
     dest: /etc/keepalived/keepalived.conf
     mode: 0644
+  register: config
+
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    enabled: yes
+    state: restarted
+  when: check.changed and config.changed

@@ -10,6 +10,11 @@ services:
       harbor-chartmuseum:
         aliases:
           - redis
+  log:
+    networks:
+      harbor-clair:
+        aliases:
+          - harbor-log
   chartmuseum:
     container_name: chartmuseum
     image: goharbor/chartmuseum-photon:v0.7.1-v1.7.0
@@ -26,6 +31,7 @@ services:
     dns_search: .
     depends_on:
       - redis
+      - log
     volumes:
       - /data/chart_storage:/chart_storage:z
       - ./common/config/chartserver:/etc/chartserver:z

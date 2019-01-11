@@ -6,6 +6,11 @@ services:
   proxy:
     networks:
       - harbor-notary
+  log:
+    networks:
+      harbor-clair:
+        aliases:
+          - harbor-log
   notary-server:
     image: goharbor/notary-server-photon:v0.6.1-v1.7.0
     container_name: notary-server
@@ -25,6 +30,7 @@ services:
       - ./common/config/notary/server_env
     depends_on:
       - notary-signer
+      - log
     logging:
       driver: "syslog"
       options:

@@ -51,6 +51,8 @@ services:
         aliases:
           - notarysigner
     dns_search: .
+    depends_on:
+      - log
     volumes:
       - ./common/config/notary:/etc/notary:z
     env_file:

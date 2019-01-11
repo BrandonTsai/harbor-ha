@@ -62,4 +62,4 @@
   become: True
   become_method: 'sudo'
   command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-chartmuseum'
-#   when: groups['harbor'][0] == ansible_default_ipv4.address
+  when: groups['harbor'][0] == ansible_default_ipv4.address

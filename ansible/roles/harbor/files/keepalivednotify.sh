@@ -9,7 +9,9 @@ case $STATE in
         echo "MASTER" > /tmp/keepalived_state
         pushd /opt/postgresql/
         docker-compose exec postgresql touch /tmp/touch_me_to_promote_to_me_master
-        /opt/harbor/install.sh --with-notary --with-clair --with-chartmuseum
+        popd
+        pushd /opt/harbor/
+        /opt/harbor/install.sh --with-clair --with-chartmuseum
         popd
         exit 0
         ;;
@@ -19,7 +21,7 @@ case $STATE in
         ;;
     "FAULT")
         echo "FAULT" > /tmp/keepalived_state
-        /opt/harbor/install.sh --with-notary --with-clair --with-chartmuseum
+        #/opt/harbor/install.sh --with-clair --with-chartmuseum
         exit 0
         ;;
     *)

@@ -24,4 +24,4 @@
     name: keepalived
     enabled: yes
     state: restarted
-  when: check.changed and config.changed
+  when: check.changed or config.changed

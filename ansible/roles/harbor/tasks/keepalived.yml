@@ -12,7 +12,14 @@
     mode: 0764
   register: check
 
-- name: set up leepalived config
+- name: copy keepalivednotify.sh
+  copy:
+    src: keepalivednotify.sh
+    dest: /opt/keepalivednotify.sh
+    mode: 0764
+  register: notify
+
+- name: set up keepalived config
   template:
     src: keepalived.conf
     dest: /etc/keepalived/keepalived.conf
@@ -24,4 +31,4 @@
     name: keepalived
     enabled: yes
     state: restarted
-  when: check.changed or config.changed
+  when: notify.changed or check.changed or config.changed

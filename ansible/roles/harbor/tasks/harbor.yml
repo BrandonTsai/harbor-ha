@@ -38,21 +38,28 @@
     src: "docker-compose.chartmuseum.yml"
     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.chartmuseum.yml"
   register: compose_fil
-- name: replace docker-compose.notary file
-  copy:
-    src: "docker-compose.notary.yml"
-    dest: "{{ harbor_dest_dir }}/harbor/docker-compose.notary.yml"
-  register: compose_fil
 
-- name: replace notary signer env file
+- name: replace core app.conf file
   template:
-    src: "notary_signer_env.j2"
-    dest: "{{ harbor_dest_dir }}/harbor/common/templates/notary/signer_env"
+    src: "core-app.conf.j2"
+    dest: "{{ harbor_dest_dir }}/harbor/common/templates/core/app.conf"
     mode: 0644
+
+# - name: replace docker-compose.notary file
+#   copy:
+#     src: "docker-compose.notary.yml"
+#     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.notary.yml"
+#   register: compose_fil
+
+# - name: replace notary signer env file
+#   template:
+#     src: "notary_signer_env.j2"
+#     dest: "{{ harbor_dest_dir }}/harbor/common/templates/notary/signer_env"
+#     mode: 0644
 
 # Run install.sh to install and start Harbor;
 - name: Run the install command.
   become: True
   become_method: 'sudo'
-  command: '{{ harbor_dest_dir }}/harbor/install.sh --with-notary --with-clair --with-chartmuseum'
+  command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-chartmuseum'
 #   when: groups['harbor'][0] == ansible_default_ipv4.address

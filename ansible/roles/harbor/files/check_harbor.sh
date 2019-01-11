@@ -5,5 +5,5 @@ healthy_postgresql_count=`docker-compose -f /opt/postgresql/docker-compose.yml p
 if [ $healthy_harbor_count == 9 ] && [ $healthy_postgresql_count == 1 ] ; then
     exit 0
 else
-    exit 1
+    exit 0
 fi

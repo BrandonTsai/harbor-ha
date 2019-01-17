@@ -1,0 +1,8 @@
+---
+- name: copy node_exporter
+  copy:
+    src: node_exporter
+    dest: /opt/node_exporter
+    mode: 0777
+  register: exporter
+

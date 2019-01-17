@@ -10,3 +10,4 @@
     - { role: pre-install/docker, tags: ["docker"] }
     - { role: postgresql, tags: ["postgresql"] }
     - { role: harbor, tags: ["harbor"] }
+    - { role: prometheus, tags: ["prometheus"] }

@@ -3,6 +3,6 @@
 # - include: self_signed_ssl.yml
 
 # # Install Harbor
-- include: self_signed_ssl.yml
-- include: harbor.yml
-- include: keepalived.yml
+- import_tasks: self_signed_ssl.yml
+- import_tasks: harbor.yml
+- import_tasks: keepalived.yml

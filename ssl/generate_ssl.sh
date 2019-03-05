@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 gen_cert(){
 
     openssl req \

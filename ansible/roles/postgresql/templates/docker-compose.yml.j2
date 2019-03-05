@@ -1,0 +1,13 @@
+version: '3'
+services:
+  postgresql:
+    image: 'danieldent/postgres-replication'
+    container_name: harbor-db
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - {{ db_data_dir }}:/var/lib/postgresql/data:z
+    env_file:
+     - ./config/env
+    dns_search: .

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  redis:
+    image: goharbor/redis-photon:v1.7.0
+    container_name: redis
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    ports:
+      - 6379:6379
+    restart: always
+    volumes:
+      - {{ redis_dir }}/data:/var/lib/redis

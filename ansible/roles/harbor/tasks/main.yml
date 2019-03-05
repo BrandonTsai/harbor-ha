@@ -1,9 +1,8 @@
 ---
-# Install docker and docker-compose
-- include: docker.yml
-
-# # copy your own SSL certificate
-- include: self_signed_ssl.yml
+# # # copy your own SSL certificate
+# - include: self_signed_ssl.yml
 
 # # Install Harbor
-- include: harbor.yml
+- import_tasks: self_signed_ssl.yml
+- import_tasks: harbor.yml
+- import_tasks: keepalived.yml

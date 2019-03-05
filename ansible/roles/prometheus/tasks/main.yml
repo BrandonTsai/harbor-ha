@@ -1,0 +1,29 @@
+---
+- name: copy node_exporter
+  copy:
+    src: node_exporter
+    dest: /opt/node_exporter
+    mode: 0777
+  register: exporter
+
+- name: Ensure Supervisor is installed (specific version).
+  pip:
+    name: supervisor
+    state: present
+
+- name: Ensure Supervisor log dir exists.
+  file:
+    path: "{{ supervisor_log_dir }}"
+    state: directory
+    mode: 0755
+
+# - name: copy supervisor config
+#   copy:
+#     src: node_exporter.conf
+#     dest:
+
+# - name: Ensure Supervisor is started (if configured).
+#   service:
+#     name: supervisord
+#     state: started
+#     enabled: true

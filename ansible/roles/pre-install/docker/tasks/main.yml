@@ -1,0 +1,23 @@
+---
+- name: Install docker
+  apt:
+    name: ["docker.io"]
+    state: present
+  become: yes
+- name: Enable and restart docker in systemd
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+- name: Install Docker Compose.
+  get_url:
+    url: 'https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64'
+    dest: '/bin/docker-compose'
+    mode: 0755
+- name: Bash aliases | Add aliases
+  lineinfile:
+    dest: "~/.bash_aliases"
+    create: yes
+    mode: 0644
+    line: 'alias dcp="docker-compose"'
+    regexp: "^alias dcp="

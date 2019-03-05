@@ -1,0 +1,14 @@
+appname = Harbor
+runmode = dev
+enablegzip = true
+
+[dev]
+httpport = 8080
+
+[common]
+ClairDBHost={{ vip }}
+ClairDBPort=5432
+ClairDBUsername={{ clair_db_user }}
+ClairDBPassword={{ clair_db_password }}
+ClairDB=clair
+ClairDBSSLMode=disable

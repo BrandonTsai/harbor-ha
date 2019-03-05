@@ -1,17 +1,19 @@
 Harbor on AWS with Ansible and Terraform
 =========================================
 
-Usage
------
+Pre-Fight
+---------
 
-### Create AWS environment via Terraform
+- Two VMs
+- Virtual IP
+- Openstack Swift Credential
+- ssl certificate
 
-```bash
-terraform init
-terraform apply -var-file=secret.tfvars -auto-approve
-```
+### Create ssl certificate files
 
-### Create ssl certification files
+You can use openssl, EasyRSA or other tools to generate the ssl certificate
+
+Reference commamnds
 
 ```bash
 openssl req \
@@ -24,16 +26,40 @@ openssl req \
 openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt
 ```
 
+Usage
+-----
+
+```
+cd ansible
+```
+
+### create inventory file
+
+Copy host/example.ini to hosts/production/xxx.ini
+
+Modify hosts/production/xxx.ini with appropriate value.
+
 
 ### Run ansible
 
 ```bash
-ansible-playbook plays/harbor.yml -i hosts/prod.ini
+ansible-playbook harbor.yml -i hosts/production/xxx.ini
+```
+
+### Make sure docker containers are running. 
+
+connect to master node
+
+```
+sudo docker ps
 ```
 
 
-Mac User
-========
+Test Harbor
+------------
+
+### Mac User
+
 
 1. Add cert file to keychain
 
@@ -44,3 +70,4 @@ sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keyc
 2. Restart Docker
 
 3. Docker Login
+

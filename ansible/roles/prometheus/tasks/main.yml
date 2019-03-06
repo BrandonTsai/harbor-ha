@@ -5,7 +5,11 @@
     dest: /opt/node_exporter
     mode: 0777
   register: exporter
-
+- name: Install pip
+  apt:
+    name: ["python-pip"]
+    state: present
+  become: yes
 - name: Ensure Supervisor is installed (specific version).
   pip:
     name: supervisor

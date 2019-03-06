@@ -4,4 +4,4 @@
 
 # Ignore Production information
 hosts/production
-hosts/test.ini
+files/cert

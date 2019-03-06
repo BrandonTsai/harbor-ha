@@ -4,19 +4,19 @@
   file:
     path: '{{ harbor_download_dir }}'
     state: directory
-#- name: Download tarball
-#  get_url:
-#    url: '{{ horbor_online_installer_url }}'
-#    dest: '{{ harbor_download_dir }}/{{ harbor_installer_tgz_name }}'
+- name: Download tarball
+  get_url:
+    url: '{{ horbor_online_installer_url }}'
+    dest: '{{ harbor_download_dir }}/{{ harbor_installer_tgz_name }}'
 - name: create destination dir1
   file:
     path: '{{ harbor_dest_dir }}'
     state: directory
-#- name: Extract harbor_installer_tgz into /var/lib/foo
-#  unarchive:
-#    src: '{{ harbor_download_dir }}/{{ harbor_installer_tgz_name }}'
-#    dest: '{{ harbor_dest_dir }}'
-#    remote_src: yes
+- name: Extract harbor_installer_tgz into /var/lib/foo
+  unarchive:
+    src: '{{ harbor_download_dir }}/{{ harbor_installer_tgz_name }}'
+    dest: '{{ harbor_dest_dir }}'
+    remote_src: yes
 - name: upload harbor.cfg from template
   template:
     src: harbor.cfg.j2

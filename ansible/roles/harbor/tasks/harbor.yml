@@ -23,6 +23,7 @@
     dest: '{{ harbor_dest_dir }}/harbor/harbor.cfg'
     mode: 0644
     backup: yes
+  register: harbor_cfg
 - name: replace docker-compose file
   copy:
     src: "docker-compose.yml"
@@ -32,12 +33,12 @@
   copy:
     src: "docker-compose.clair.yml"
     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.clair.yml"
-  register: compose_fil
+  register: compose_file_clair
 - name: replace docker-compose.chartmuseum file
   copy:
     src: "docker-compose.chartmuseum.yml"
     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.chartmuseum.yml"
-  register: compose_fil
+  register: compose_file_chartmuseum
 
 - name: replace core app.conf file
   template:
@@ -62,4 +63,5 @@
   become: True
   become_method: 'sudo'
   command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-chartmuseum'
-  when: groups['harbor'][0] == ansible_default_ipv4.address
+  when: harbor_cfg.changed or compose_file.changed
+#   when: groups['harbor'][0] == ansible_default_ipv4.address

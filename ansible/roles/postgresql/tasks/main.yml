@@ -28,9 +28,9 @@
     backup: yes
   register: db_env
 
-# - name: pull images
-#   shell: "docker-compose -f {{ db_dir }}/docker-compose.yml pull"
-#   register: docker_pull
+- name: pip install docker-py
+  pip:
+    name: docker-py
 
 - name: pull an image
   docker_image:

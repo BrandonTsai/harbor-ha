@@ -6,7 +6,7 @@ healthy_postgresql_count=`docker-compose -f /opt/postgresql/docker-compose.yml p
 if [ $healthy_postgresql_count == 1 ] ; then
     exit 0
 else
-    echo "healthy_harbor_count: $healthy_harbor_count" > /tmp/check_harblr.result
-    docker-compose -f /opt/harbor/docker-compose.chartmuseum.yml -f /opt/harbor/docker-compose.clair.yml -f /opt/harbor/docker-compose.yml ps >> /tmp/check_harblr.result
+    # echo "healthy_harbor_count: $healthy_postgresql_count" > /tmp/check_harblr.result
+    # docker-compose -f /opt/harbor/docker-compose.chartmuseum.yml -f /opt/harbor/docker-compose.clair.yml -f /opt/harbor/docker-compose.yml ps >> /tmp/check_harblr.result
     exit 1
 fi

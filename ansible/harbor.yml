@@ -5,6 +5,6 @@
   roles:
     - { role: pre-install/docker, tags: ["docker"] }
     - { role: postgresql, tags: ["postgresql"] }
-    - { role: harbor, tags: ["harbor"] }
     - { role: keepalived, tags: ["keepalived"] }
+    - { role: harbor, tags: ["harbor"] }
     - { role: prometheus, tags: ["prometheus"] }

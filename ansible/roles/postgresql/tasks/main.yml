@@ -3,10 +3,12 @@
     name: ["postgresql-client"]
     state: present
   become: yes
+
 - name: create postgresql dir
   file:
     path: "{{ db_dir }}"
     state: directory
+
 - name: create postgresql dir
   file:
     path: "{{ db_dir }}/config"
@@ -16,11 +18,23 @@
     path: "{{ db_data_dir }}"
     state: directory
     mode: 0777
+
 - name: copy docker-compose file for postgresql
   template:
     src: docker-compose.yml.j2
     dest: "{{ db_dir }}/docker-compose.yml"
   register: compose_file
+
+- name: set server_role
+  set_fact:
+    server_role: "master"
+  when: ansible_default_ipv4.address == db_master_ip
+
+- name: set server_role
+  set_fact:
+    server_role: "slave"
+  when: ansible_default_ipv4.address != db_master_ip
+
 - name: replace postgresql env file
   template:
     src: "postgresql/{{server_role}}-env.j2"

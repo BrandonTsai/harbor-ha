@@ -58,22 +58,22 @@
 #     dest: "{{ harbor_dest_dir }}/harbor/common/templates/notary/signer_env"
 #     mode: 0644
 
-# Run install.sh to install and start Harbor;
-# - name: Run the install command on First.
-#   become: True
-#   become_method: 'sudo'
-#   command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-chartmuseum'
-#   when:
-#     - harbor_cfg.changed or compose_file.changed
-#     - groups['harbor'][0] == ansible_default_ipv4.address
+###  Run install.sh to install and start Harbor;
+- name: Run the install command on First.
+  become: True
+  become_method: 'sudo'
+  command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-chartmuseum'
+  when:
+    - harbor_cfg.changed or compose_file.changed
+    - groups['harbor'][0] == ansible_default_ipv4.address
 
-# - pause:
-#     minutes: 1
+- pause:
+    minutes: 1
 
-# - name: Run the install command on Sewcond.
-#   become: True
-#   become_method: 'sudo'
-#   command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-chartmuseum'
-#   when:
-#     - harbor_cfg.changed or compose_file.changed
-#     - groups['harbor'][1] == ansible_default_ipv4.address
+- name: Run the install command on Sewcond.
+  become: True
+  become_method: 'sudo'
+  command: '{{ harbor_dest_dir }}/harbor/install.sh --with-clair --with-chartmuseum'
+  when:
+    - harbor_cfg.changed or compose_file.changed
+    - groups['harbor'][1] == ansible_default_ipv4.address

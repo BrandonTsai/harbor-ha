@@ -78,26 +78,26 @@
   retries: 6
   delay: 5
   ignore_errors: yes
-  when: groups['harbor'][0] == ansible_default_ipv4.address
+  when: db_master_ip == ansible_default_ipv4.address
 
 - name: Init Clair DB | debug clair_db
   debug:
     msg: "{{clair_db}}"
-  when: groups['harbor'][0] == ansible_default_ipv4.address and clair_db.failed
+  when: db_master_ip == ansible_default_ipv4.address and clair_db.failed
 
 - name: Init Clair DB | create database
   shell: "docker exec -t harbor-db psql -U postgres -c \"create database clair;\""
   register: create_clair_db
-  when: groups['harbor'][0] == ansible_default_ipv4.address and clair_db.failed
+  when: db_master_ip == ansible_default_ipv4.address and clair_db.failed
 
 - name: Init Clair DB | create user
   shell: "docker exec -t harbor-db psql -U postgres -c \"create user {{ clair_db_user }} with encrypted password '{{ clair_db_password }}';\""
   register: create_clair_user
-  when: groups['harbor'][0] == ansible_default_ipv4.address and create_clair_db.changed
+  when: db_master_ip == ansible_default_ipv4.address and create_clair_db.changed
 
 - name: Init Clair DB | create user
   shell: "docker exec -t harbor-db psql -U postgres -c \"grant all privileges on database clair to {{ clair_db_user }};\""
-  when: groups['harbor'][0] == ansible_default_ipv4.address and create_clair_user.changed
+  when: db_master_ip == ansible_default_ipv4.address and create_clair_user.changed
 
 
 
@@ -109,23 +109,23 @@
   retries: 6
   delay: 5
   ignore_errors: yes
-  when: groups['harbor'][0] == ansible_default_ipv4.address
+  when: db_master_ip == ansible_default_ipv4.address
 
 - name: Init Notary DB | debug notary_db
   debug:
     msg: "{{notary_db}}"
-  when: groups['harbor'][0] == ansible_default_ipv4.address and notary_db.failed
+  when: db_master_ip == ansible_default_ipv4.address and notary_db.failed
 
 - name: Init Notary DB | create database
   shell: "docker exec -t harbor-db psql -U postgres -c \"create database notarysigner;\""
   register: create_notary_db
-  when: groups['harbor'][0] == ansible_default_ipv4.address and notary_db.failed
+  when: db_master_ip == ansible_default_ipv4.address and notary_db.failed
 
 - name: Init Notary DB | create user
   shell: "docker exec -t harbor-db psql -U postgres -c \"create user {{ notary_signer_db_user }} with encrypted password '{{ notary_signer_db_password }}';\""
   register: create_notary_user
-  when: groups['harbor'][0] == ansible_default_ipv4.address and create_notary_db.changed
+  when: db_master_ip == ansible_default_ipv4.address and create_notary_db.changed
 
 - name: Init Notary DB | create user
   shell: "docker exec -t harbor-db psql -U postgres -c \"grant all privileges on database notarysigner to {{ notary_signer_db_user }};\""
-  when: groups['harbor'][0] == ansible_default_ipv4.address and create_notary_user.changed
+  when: db_master_ip == ansible_default_ipv4.address and create_notary_user.changed

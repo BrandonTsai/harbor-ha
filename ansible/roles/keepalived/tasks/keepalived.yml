@@ -30,5 +30,11 @@
   systemd:
     name: keepalived
     enabled: yes
-    state: restarted
+    state: started
+
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    enabled: yes
+    state: reloaded
   when: notify.changed or check.changed or config.changed

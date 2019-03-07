@@ -67,6 +67,8 @@ Test Harbor
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./server.crt
 ```
 
+or set as insecure registry
+
 2. Restart Docker
 
 3. Docker Login

@@ -1,5 +1,5 @@
-#!/bin/bash
-exec &>> /tmp/keepalive_notify.log
+#!/bin/bash -x
+exec &>> /var/log/keepalive_notify.log
 
 TYPE=$1
 NAME=$2
@@ -10,7 +10,9 @@ case $STATE in
         echo "MASTER" | tee /tmp/keepalived_state
         pushd /opt/postgresql/
         docker-compose exec postgresql touch /tmp/touch_me_to_promote_to_me_master
+        docker-compose exec postgresql ls /tmp/touch_me_to_promote_to_me_master
         popd
+        sleep 5
         pushd /opt/harbor/
         /opt/harbor/install.sh --with-clair --with-chartmuseum
         popd

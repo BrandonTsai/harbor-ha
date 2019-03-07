@@ -50,14 +50,22 @@
   docker_image:
     name: "{{ postgresql_image }}"
 
-- name: remove old container
-  shell: "docker-compose -f {{ db_dir }}/docker-compose.yml down"
+- name: check postgresql is running or not
+  shell: "docker ps -q --no-trunc | grep $(docker-compose ps -q postgresql)"
+  args:
+    chdir: "{{db_dir}}"
   ignore_errors: yes
-  when: db_env.changed
+  register: check_container
+
+- name: start postgresql container
+  shell: "docker-compose -f {{ db_dir }}/docker-compose.yml up -d"
+  when: check_container.rc != 0
 
 - name: launch container
-  shell: "docker-compose -f {{ db_dir }}/docker-compose.yml up -d"
-  when: db_env.changed
+  shell: "docker-compose -f {{ db_dir }}/docker-compose.yml restart"
+  when:
+   - db_env.changed
+   - check_container.rc == 0
 
 - debug:
     msg: "{{groups['harbor'][0]}}"

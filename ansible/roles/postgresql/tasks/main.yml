@@ -27,20 +27,23 @@
     dest: "{{ db_dir }}/config/env"
     backup: yes
   register: db_env
-# - name: init scripts
-#   template:
-#     src: db_init.sql.j2
-#     dest: "{{ db_dir }}/config/db_init.sql"
-#     mode: 0755
-- name: pull images
-  shell: "docker-compose -f {{ db_dir }}/docker-compose.yml pull"
-  register: docker_pull
+
+# - name: pull images
+#   shell: "docker-compose -f {{ db_dir }}/docker-compose.yml pull"
+#   register: docker_pull
+
+- name: pull an image
+  docker_image:
+    name: "{{ postgresql_image }}"
+
 - name: remove old container
   shell: "docker-compose -f {{ db_dir }}/docker-compose.yml down"
   ignore_errors: yes
+  when: db_env.changed
 
 - name: launch container
   shell: "docker-compose -f {{ db_dir }}/docker-compose.yml up -d"
+  when: db_env.changed
 
 - debug:
     msg: "{{groups['harbor'][0]}}"

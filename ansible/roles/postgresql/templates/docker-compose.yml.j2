@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgresql:
-    image: 'danieldent/postgres-replication'
+    image: '{{ postgresql_image }}'
     container_name: harbor-db
     restart: always
     ports:

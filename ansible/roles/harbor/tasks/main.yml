@@ -2,4 +2,3 @@
 # # Install Harbor
 - import_tasks: self_signed_ssl.yml
 - import_tasks: harbor.yml
-# - import_tasks: keepalived.yml

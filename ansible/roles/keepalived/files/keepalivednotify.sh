@@ -23,8 +23,8 @@ case $STATE in
         echo "MASTER" | tee /tmp/keepalived_state
         pushd /opt/postgresql/
         make_sure_postgresql_running
-        docker-compose exec postgresql touch /tmp/touch_me_to_promote_to_me_master
-        docker-compose exec postgresql ls /tmp/touch_me_to_promote_to_me_master
+        docker-compose exec -T postgresql touch /tmp/touch_me_to_promote_to_me_master
+        docker-compose exec -T postgresql ls /tmp/touch_me_to_promote_to_me_master
         popd
         sleep 5
         # pushd /opt/harbor/

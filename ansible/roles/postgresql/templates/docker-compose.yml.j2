@@ -8,6 +8,8 @@ services:
       - 5432:5432
     volumes:
       - {{ db_data_dir }}:/var/lib/postgresql/data:z
+      - {{ db_dir }}/config/setup-replication.sh:/docker-entrypoint-initdb.d/setup-replication.sh
     env_file:
      - ./config/env
     dns_search: .
+    stop_grace_period: 30s

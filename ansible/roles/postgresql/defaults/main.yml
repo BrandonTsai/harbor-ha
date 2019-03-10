@@ -1,3 +1,4 @@
 db_dir: /opt/postgresql
 db_data_dir: /data/database
-postgresql_image: danieldent/postgres-replication
+postgresql_image: danieldent/postgres-replication:9.6
+# postgresql_image: brandontsai/postgres-replication:9.6-1

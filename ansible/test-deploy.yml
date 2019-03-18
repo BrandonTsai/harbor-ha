@@ -1,0 +1,6 @@
+- name: harbor server.
+  hosts: harbor
+  become: True
+  become_method: sudo
+  roles:
+    - { role: test/test1, tags: ["test1"] }

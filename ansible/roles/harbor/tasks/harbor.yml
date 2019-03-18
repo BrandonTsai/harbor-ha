@@ -46,17 +46,23 @@
     dest: "{{ harbor_dest_dir }}/harbor/common/templates/core/app.conf"
     mode: 0644
 
-# - name: replace docker-compose.notary file
-#   copy:
-#     src: "docker-compose.notary.yml"
-#     dest: "{{ harbor_dest_dir }}/harbor/docker-compose.notary.yml"
-#   register: compose_fil
+- name: replace docker-compose.notary file
+  copy:
+    src: "docker-compose.notary.yml"
+    dest: "{{ harbor_dest_dir }}/harbor/docker-compose.notary.yml"
+  register: compose_fil
 
-# - name: replace notary signer env file
-#   template:
-#     src: "notary_signer_env.j2"
-#     dest: "{{ harbor_dest_dir }}/harbor/common/templates/notary/signer_env"
-#     mode: 0644
+- name: replace notary signer env file
+  template:
+    src: "notary_signer_env.j2"
+    dest: "{{ harbor_dest_dir }}/harbor/common/templates/notary/signer_env"
+    mode: 0644
+
+- name: replace notary signer env file
+  template:
+    src: "signer-config.postgres.json.j2"
+    dest: "{{ harbor_dest_dir }}/harbor/common/templates/notary/signer-config.postgres.json"
+    mode: 0644
 
 ###  Run install.sh to install and start Harbor;
 - name: Run the install command on Master VM.
@@ -67,8 +73,18 @@
     - harbor_cfg.changed or compose_file.changed
     - db_master_ip == ansible_default_ipv4.address
 
-- pause:
-    minutes: 1
+#- pause:
+#    minutes: 1
+
+- name: "wait until all harbor container runing"
+  shell: "docker-compose -f /opt/harbor/docker-compose.yml ps | grep 'Up' | wc -l"
+  register: result
+  until: result.stdout.find("9") != -1
+  retries: 6
+  delay: 10
+  when:
+    - harbor_cfg.changed or compose_file.changed
+    - db_master_ip == ansible_default_ipv4.address
 
 - name: Run the install command on Standby.
   become: True

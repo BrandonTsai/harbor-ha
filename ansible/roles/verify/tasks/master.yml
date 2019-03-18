@@ -1,0 +1,30 @@
+---
+- name: "Verify MASTER | wait until all container runing"
+  shell: "docker ps | grep 'Up' | wc -l"
+  register: result
+  until: result.stdout.find("12") != -1
+  retries: 4
+  delay: 5
+
+- name: "Verify MASTER | wait until get vip"
+  shell: "ip addr list ens3 | grep 'inet ' | wc -l"
+  register: result
+  until: result.stdout.find("2") != -1
+  retries: 6
+  delay: 10
+
+- name: Verify MASTER | Check keepalive status not FAULT
+  shell: "service keepalived status | grep 'STATE'"
+  register: result
+  until: result.stdout.find("FAULT") == -1
+  retries: 6
+  delay: 10
+
+- name: Verify MASTER | Check that the /data/database/recovery.conf does not exists
+  stat:
+    path: /data/database/recovery.conf
+  register: stat_result
+
+- fail:
+    msg: "Postgeresql is not MASTER."
+  when: stat_result.stat.exists != False

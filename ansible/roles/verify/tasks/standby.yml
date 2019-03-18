@@ -1,0 +1,31 @@
+---
+- name: "Verify STANDBY | wait until all container runing"
+  shell: "docker ps | grep 'Up' | wc -l"
+  register: result
+  until: result.stdout.find("12") != -1
+  retries: 6
+  delay: 10
+
+
+- name: "Verify STANDBY | verify it does not get VIP"
+  shell: "ip addr list ens3 | grep 'inet ' | wc -l"
+  register: result
+  until: result.stdout.find("1") != -1
+  retries: 6
+  delay: 10
+
+- name: Verify STANDBY | Check keepalive status not FAULT
+  shell: "service keepalived status | grep 'STATE'"
+  register: result
+  until: result.stdout.find("FAULT") == -1
+  retries: 6
+  delay: 10
+
+- name: Verify STANDBY | Check that the /data/database/recovery.conf exists
+  stat:
+    path: /data/database/recovery.conf
+  register: stat_result
+
+- fail:
+    msg: "Postgeresql is not BACKUP."
+  when: stat_result.stat.exists == False

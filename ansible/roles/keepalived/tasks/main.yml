@@ -1,2 +1,49 @@
 ---
-- import_tasks: keepalived.yml
+- name: install keepalived
+  apt:
+    name: ["keepalived"]
+    state: present
+  become: yes
+
+- name: copy check_harbor.sh
+  template:
+    src: health_check.sh.j2
+    dest: /opt/health_check.sh
+    mode: 0764
+  register: check
+
+- name: copy keepalivednotify.sh
+  copy:
+    src: keepalivednotify.sh
+    dest: /opt/keepalivednotify.sh
+    mode: 0764
+  register: notify
+
+- name: set up keepalived config
+  template:
+    src: keepalived-standby.conf
+    dest: /etc/keepalived/keepalived.conf
+    mode: 0644
+  register: config
+  when: ansible_default_ipv4.address != db_master_ip
+
+- name: set up keepalived master config
+  template:
+    src: keepalived-master.conf
+    dest: /etc/keepalived/keepalived.conf
+    mode: 0644
+  register: config
+  when: ansible_default_ipv4.address == db_master_ip
+
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    enabled: yes
+    state: started
+
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    enabled: yes
+    state: reloaded
+  when: notify.changed or check.changed or config.changed

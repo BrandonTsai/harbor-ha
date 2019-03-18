@@ -8,3 +8,4 @@
     - { role: keepalived, tags: ["keepalived"] }
     - { role: harbor, tags: ["harbor"] }
     - { role: prometheus, tags: ["prometheus"] }
+    - { role: verify, tags: ["verify"] }

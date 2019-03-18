@@ -1,0 +1,12 @@
+version: "3"
+services:
+  devbox:
+    image: harbor-build
+    build:
+      context: ../../
+      dockerfile: ${PWD}/Dockerfile
+    volumes:
+      - ${PWD}/../../ansible:/root/ansible
+      - ~/.ssh:/root/.ssh
+    working_dir: /root/ansible
+    command: tail -f /dev/null

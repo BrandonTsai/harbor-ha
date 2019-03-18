@@ -1,0 +1,24 @@
+#!/bin/bash -ex
+exec &>> /var/log/become_standby.log
+PGDATA=/data/database
+
+pushd /opt/postgresql/
+docker-compose down
+
+rm -rf ${PGDATA}/*
+sleep 2
+
+docker-compose run --rm postgresql gosu postgres pg_basebackup -h {{ peer_ip }} -U {{ harbor_db_user }} -D /var/lib/postgresql/data -Fp -Xs -P -R --checkpoint=fast
+if [ ! -s "${PGDATA}/PG_VERSION" ]; then
+  echo "pg_basebackup fail...?"
+fi
+
+echo "trigger_file = '/tmp/touch_me_to_promote_to_me_master'" >> ${PGDATA}/recovery.conf
+
+if [ -e "${PGDATA}/recovery.done" ]; then
+  mv /data/database/recovery.done /tmp/
+fi
+
+sleep 2
+docker-compose up -d
+popd

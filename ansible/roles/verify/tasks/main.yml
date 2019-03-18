@@ -1,0 +1,6 @@
+---
+- include: master.yml
+  when: ansible_default_ipv4.address == db_master_ip
+
+- include: standby.yml
+  when: ansible_default_ipv4.address != db_master_ip

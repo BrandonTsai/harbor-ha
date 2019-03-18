@@ -1,0 +1,15 @@
+#!/bin/bash -ex
+
+exec &>> /var/log/keepalive_check.log
+
+healthy_postgresql_count=$(/bin/docker-compose -f /opt/postgresql/docker-compose.yml ps | grep Up | wc -l)
+unhealthy_harbor_num=0
+if nc -z {{ vip }} 5432 && [ -s /opt/harbor/docker-compose.yml ] ; then
+    unhealthy_harbor_num=$(/bin/docker-compose -f /opt/harbor/docker-compose.yml -f /opt/harbor/docker-compose.clair.yml -f /opt/harbor/docker-compose.chartmuseum.yml ps | awk '/Exit|Restarting/' | wc -l)
+fi
+echo $unhealthy_harbor_num
+if [ "$healthy_postgresql_count" == "1" ] && [ ! -f /tmp/disable_keepalived ] && [ "$unhealthy_harbor_num" == "0" ]; then
+    exit 0
+else
+    exit 1
+fi

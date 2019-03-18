@@ -20,28 +20,41 @@
     state: directory
     mode: 0777
 
+- name: set peer ip
+  set_fact:
+    peer_ip: "{{groups['harbor'][1]}}"
+  when: ansible_default_ipv4.address == groups['harbor'][0]
+
+- name: set peer ip
+  set_fact:
+    peer_ip: "{{groups['harbor'][0]}}"
+  when: ansible_default_ipv4.address == groups['harbor'][1]
+
+- name: become_standby.sh
+  template:
+    src: "become_standby.sh.j2"
+    dest: "{{ db_dir }}/become_standby.sh"
+    mode: 0777
+  register: db_env
+
+- name: replace postgresql env file
+  template:
+    src: "postgresql/env.j2"
+    dest: "{{ db_dir }}/config/env"
+  register: db_env
+
+- lineinfile:
+    path: "{{ db_dir }}/config/env"
+    regexp: "^REPLICATE_FROM="
+    line: "REPLICATE_FROM={{db_master_ip}}"
+  when: ansible_default_ipv4.address != db_master_ip
+
+
 - name: copy docker-compose file for postgresql
   template:
     src: docker-compose.yml.j2
     dest: "{{ db_dir }}/docker-compose.yml"
   register: compose_file
-
-- name: set server_role
-  set_fact:
-    server_role: "master"
-  when: ansible_default_ipv4.address == db_master_ip
-
-- name: set server_role
-  set_fact:
-    server_role: "slave"
-  when: ansible_default_ipv4.address != db_master_ip
-
-- name: replace postgresql env file
-  template:
-    src: "postgresql/{{server_role}}-env.j2"
-    dest: "{{ db_dir }}/config/env"
-    backup: yes
-  register: db_env
 
 - name: copy setup-replication.sh file for postgresql
   copy:
